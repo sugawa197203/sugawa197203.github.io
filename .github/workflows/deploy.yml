@@ -1,0 +1,42 @@
+name: Build and Deploy (self-hosted)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+env:
+  IMAGE_NAME: sugawadev:latest
+  CONTAINER_NAME: sugawadev
+  HOST_PORT: 80
+  CONTAINER_PORT: 80
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore Sugawadev.Client/Sugawadev.Client.csproj
+
+      - name: Build Docker image
+        run: docker build -f Sugawadev.Client/Dockerfile -t $IMAGE_NAME .
+
+      - name: Replace running container
+        run: |
+          if [ "$(docker ps -aq -f name=${CONTAINER_NAME})" ]; then
+            docker rm -f ${CONTAINER_NAME}
+          fi
+          docker run -d \
+            --name ${CONTAINER_NAME} \
+            -p ${HOST_PORT}:${CONTAINER_PORT} \
+            --restart unless-stopped \
+            ${IMAGE_NAME}
