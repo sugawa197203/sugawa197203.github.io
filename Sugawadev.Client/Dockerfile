@@ -1,20 +1,23 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
+WORKDIR /src
 
-COPY ./Sugawadev.Client/Sugawadev.Client.csproj ./Sugawadev.Client/
+# copy csproj files for restore
 COPY ./Sugawadev/Sugawadev.csproj ./Sugawadev/
+COPY ./Sugawadev.Client/Sugawadev.Client.csproj ./Sugawadev.Client/
 
-RUN dotnet restore ./Sugawadev.Client/Sugawadev.Client.csproj
+RUN dotnet restore ./Sugawadev/Sugawadev.csproj
 
-COPY ./Sugawadev.Client ./Sugawadev.Client
+# copy all sources
 COPY ./Sugawadev ./Sugawadev
+COPY ./Sugawadev.Client ./Sugawadev.Client
 
-WORKDIR /app/Sugawadev.Client
-RUN dotnet publish -c Release -o /publish
+WORKDIR /src/Sugawadev
+RUN dotnet publish -c Release -o /app/publish --no-restore
 
-FROM nginx:alpine
-WORKDIR /usr/share/nginx/html
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+WORKDIR /app
+ENV ASPNETCORE_URLS=http://+:8080
+COPY --from=build /app/publish .
 
-COPY --from=build /publish/wwwroot .
-
-EXPOSE 80
+EXPOSE 8080
+ENTRYPOINT ["dotnet", "Sugawadev.dll"]

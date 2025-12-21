@@ -10,7 +10,7 @@ env:
   IMAGE_NAME: sugawadev:latest
   CONTAINER_NAME: sugawadev
   HOST_PORT: 8080
-  CONTAINER_PORT: 80
+  CONTAINER_PORT: 8080
 
 jobs:
   deploy:
