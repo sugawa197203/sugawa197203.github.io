@@ -12,7 +12,7 @@ COPY ./Sugawadev ./Sugawadev
 COPY ./Sugawadev.Client ./Sugawadev.Client
 
 WORKDIR /src/Sugawadev
-RUN dotnet publish -c Release -o /app/publish --no-restore
+RUN dotnet publish -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
