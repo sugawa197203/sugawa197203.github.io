@@ -15,21 +15,21 @@ env:
 jobs:
   deploy:
     runs-on: self-hosted
-    env:
-      DOTNET_INSTALL_DIR: ${{ runner.temp }}/.dotnet
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
+        env:
+          DOTNET_INSTALL_DIR: ${{ runner.temp }}/.dotnet
         with:
           dotnet-version: 8.0.x
 
       - name: Add dotnet to PATH
         run: |
-          echo "${DOTNET_INSTALL_DIR}" >> $GITHUB_PATH
-          echo "${DOTNET_INSTALL_DIR}/tools" >> $GITHUB_PATH
+          echo "${{ runner.temp }}/.dotnet" >> $GITHUB_PATH
+          echo "${{ runner.temp }}/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Restore
         run: dotnet restore Sugawadev.Client/Sugawadev.Client.csproj
