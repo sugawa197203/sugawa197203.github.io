@@ -3,6 +3,7 @@ node = "22"
 
 [env]
 _.path = ["./node_modules/.bin"]
+SITE_DOMAIN = "sugawa.dev"
 
 [tasks.install]
 description = "Install dependencies"

@@ -18,6 +18,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
