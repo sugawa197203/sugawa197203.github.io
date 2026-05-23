@@ -1,49 +1,51 @@
-name: Build and Deploy (self-hosted)
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - main
       - master
+  workflow_dispatch:
 
-env:
-  IMAGE_NAME: sugawadev:latest
-  CONTAINER_NAME: sugawadev
-  HOST_PORT: 8080
-  CONTAINER_PORT: 8080
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  deploy:
-    runs-on: self-hosted
+  build:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        env:
-          DOTNET_INSTALL_DIR: ${{ runner.temp }}/.dotnet
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          dotnet-version: 8.0.x
+          node-version: 'lts/*'
+          cache: npm
 
-      - name: Add dotnet to PATH
-        run: |
-          echo "${{ runner.temp }}/.dotnet" >> $GITHUB_PATH
-          echo "${{ runner.temp }}/.dotnet/tools" >> $GITHUB_PATH
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Restore
-        run: dotnet restore Sugawadev.Client/Sugawadev.Client.csproj
+      - name: Build
+        run: npm run build
 
-      - name: Build Docker image
-        run: docker build -f Sugawadev.Client/Dockerfile -t $IMAGE_NAME .
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./dist
 
-      - name: Replace running container
-        run: |
-          if [ "$(docker ps -aq -f name=${CONTAINER_NAME})" ]; then
-            docker rm -f ${CONTAINER_NAME}
-          fi
-          docker run -d \
-            --name ${CONTAINER_NAME} \
-            -p ${HOST_PORT}:${CONTAINER_PORT} \
-            --restart unless-stopped \
-            ${IMAGE_NAME}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

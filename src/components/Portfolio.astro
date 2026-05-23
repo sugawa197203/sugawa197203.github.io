@@ -1,0 +1,195 @@
+---
+import {
+  timeLineItems,
+  eventTimeLines,
+  portfolioItems,
+} from "~/data/portfolio";
+---
+
+<h1>ポートフォリオ</h1>
+
+<div class="sugawatimeline container mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h4>略歴</h4>
+      <ul class="timeline blue">
+        {
+          timeLineItems.map((item) => (
+            <li>
+              <h5>{item.title}</h5>
+              <a>{item.date}</a>
+              <Fragment set:html={item.description} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="sugawatimeline container mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <h4>活動履歴</h4>
+      <ul class="timeline red">
+        {
+          eventTimeLines.map((item) => (
+            <Fragment>
+              <li>
+                <h5>{item.title}</h5>
+                <a>{item.date}</a>
+                <Fragment set:html={item.description} />
+              </li>
+              {(item.xPath || item.otherPath) && (
+                <div class="rirekilink">
+                  {item.xPath && (
+                    <a
+                      href={item.xPath}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="mb-2"
+                    >
+                      <img
+                        src="/pub/logos/x.svg"
+                        alt="X"
+                        width="20"
+                        height="20"
+                      />
+                    </a>
+                  )}
+                  {item.otherPath && (
+                    <a
+                      href={item.otherPath}
+                      target="_blank"
+                      rel="noreferrer"
+                      class="mb-2"
+                    >
+                      <img
+                        src="/pub/ui/link.svg"
+                        alt="link"
+                        width="20"
+                        height="20"
+                      />
+                    </a>
+                  )}
+                </div>
+              )}
+            </Fragment>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="sakuhin container mt-5">
+  <h2>過去に作ってきたものたち</h2>
+
+  <div class="d-flex flex-wrap justify-content-center gap-3">
+    {
+      portfolioItems.map((item) => (
+        <Fragment>
+          <div
+            class="modal fade p-1"
+            id={item.id}
+            tabindex="-1"
+            aria-labelledby={`${item.id}Label`}
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id={`${item.id}Label`}>
+                    {item.title}
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  />
+                </div>
+                <div class="modal-body">
+                  <img
+                    src={item.imagePath}
+                    class="modal-img d-block mx-auto"
+                    alt={item.title}
+                  />
+                  <Fragment set:html={item.description} />
+
+                  <div class="d-flex flex-column mt-3">
+                    {item.xPath && (
+                      <a
+                        href={item.xPath}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="mb-2"
+                      >
+                        <img
+                          src="/pub/logos/x.svg"
+                          alt="X"
+                          width="20"
+                          height="20"
+                        />
+                      </a>
+                    )}
+                    {item.githubPath && (
+                      <a
+                        href={item.githubPath}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="mb-2"
+                      >
+                        <img
+                          src="/pub/logos/github.svg"
+                          alt="GitHub"
+                          width="20"
+                          height="20"
+                        />
+                      </a>
+                    )}
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    閉じる
+                  </button>
+                  {item.detailPath && (
+                    <a
+                      class="btn btn-primary"
+                      href={item.detailPath}
+                      role="button"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      詳しく見る
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="card m-1 cp"
+            data-bs-toggle="modal"
+            data-bs-target={`#${item.id}`}
+          >
+            <img
+              src={item.imagePath}
+              class="card-img-top card-aspect"
+              alt={item.title}
+            />
+            <div class="card-body">
+              <p class="card-text">{item.title}</p>
+            </div>
+          </div>
+        </Fragment>
+      ))
+    }
+  </div>
+</div>
