@@ -3,7 +3,10 @@ node = "22"
 
 [env]
 _.path = ["./node_modules/.bin"]
-SITE_DOMAIN = "sugawa.dev"
+# Must match the production GitHub Actions variable (vars.SITE_DOMAIN) so local
+# builds produce the same canonical URLs. The GitHub Pages custom domain is the
+# www host (apex sugawa.dev 301-redirects to www.sugawa.dev).
+SITE_DOMAIN = "www.sugawa.dev"
 
 [tasks.install]
 description = "Install dependencies"
