@@ -20,7 +20,7 @@ export default defineConfig({
     // URL explicitly. The domain comes from SITE_DOMAIN, so it always matches
     // the site's canonical host (currently www.sugawa.dev).
     sitemap({
-      customPages: [`https://${domain}/tools/dots/`],
+      customPages: [`https://${domain}/tools/dots/`, `https://${domain}/tools/wavconverter/`],
     }),
     {
       name: "github-pages-cname",
