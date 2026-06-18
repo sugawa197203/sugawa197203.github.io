@@ -11,17 +11,31 @@ if (!domain) {
   );
 }
 
+// The web apps used to live under /tools/<name>/ on this host but have moved to
+// their own subdomain (apps.<root domain>/<name>). We strip a leading "www." so
+// the apps host stays on the apex domain (e.g. www.sugawa.dev -> apps.sugawa.dev).
+const appsHost = `apps.${domain.replace(/^www\./, "")}`;
+
+// Old /tools/<name>/ URLs now redirect to the relocated app on appsHost. Static
+// output turns these into meta-refresh HTML pages. Both the trailing-slash and
+// non-slash forms are listed so either URL resolves.
+const APP_NAMES = ["dots", "wavconverter", "file"];
+const redirects = Object.fromEntries(
+  APP_NAMES.flatMap((name) => {
+    const destination = `https://${appsHost}/${name}`;
+    return [
+      [`/tools/${name}`, destination],
+      [`/tools/${name}/`, destination],
+    ];
+  }),
+);
+
 export default defineConfig({
   site: `https://${domain}`,
   output: "static",
+  redirects,
   integrations: [
-    // The DOTS pixel-art editor lives at /tools/dots/ on this same host but is
-    // built from a separate repo, so it isn't auto-discovered. Add its single
-    // URL explicitly. The domain comes from SITE_DOMAIN, so it always matches
-    // the site's canonical host (currently www.sugawa.dev).
-    sitemap({
-      customPages: [`https://${domain}/tools/dots/`, `https://${domain}/tools/wavconverter/`, `https://${domain}/tools/file/`],
-    }),
+    sitemap(),
     {
       name: "github-pages-cname",
       hooks: {
