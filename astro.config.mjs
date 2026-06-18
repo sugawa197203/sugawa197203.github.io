@@ -17,17 +17,12 @@ if (!domain) {
 const appsHost = `apps.${domain.replace(/^www\./, "")}`;
 
 // Old /tools/<name>/ URLs now redirect to the relocated app on appsHost. Static
-// output turns these into meta-refresh HTML pages. Both the trailing-slash and
-// non-slash forms are listed so either URL resolves.
+// output turns each into a meta-refresh HTML page emitted at
+// /tools/<name>/index.html, which GitHub Pages serves for both the slash and
+// non-slash request forms.
 const APP_NAMES = ["dots", "wavconverter", "file"];
 const redirects = Object.fromEntries(
-  APP_NAMES.flatMap((name) => {
-    const destination = `https://${appsHost}/${name}`;
-    return [
-      [`/tools/${name}`, destination],
-      [`/tools/${name}/`, destination],
-    ];
-  }),
+  APP_NAMES.map((name) => [`/tools/${name}`, `https://${appsHost}/${name}`]),
 );
 
 export default defineConfig({
