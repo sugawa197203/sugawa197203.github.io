@@ -1,0 +1,33 @@
+---
+// Catch-all fallback for the relocated web apps. The apps that used to live at
+// /tools/<name>/ on this host now live on the apps subdomain (apps.<root>/<name>).
+// astro.config.mjs already emits per-path meta-refresh redirects, but GitHub
+// Pages caches 404s for paths that never existed and doesn't purge them on
+// deploy, so a freshly added redirect page can keep serving a stale 404. This
+// 404 page is what GitHub serves for those misses, and it redirects any
+// /tools/<name> client-side — covering new apps without touching the config too.
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Redirecting…</title>
+    <script is:inline>
+      (function () {
+        var match = location.pathname.match(/^\/tools\/([^/]+)\/?$/);
+        if (match) {
+          var appsHost = "apps." + location.hostname.replace(/^www\./, "");
+          location.replace(
+            location.protocol + "//" + appsHost + "/" + match[1],
+          );
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Page not found.</p>
+  </body>
+</html>
