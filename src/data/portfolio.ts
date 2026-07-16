@@ -357,4 +357,12 @@ export const portfolioItems: PortfolioItem[] = sortByDateDesc([
     githubPath: "https://github.com/tuatmcc/SchoolFestival2024_Unity",
     date: "2024-11-08",
   },
+  {
+    id: "dots",
+    title: "DOTS",
+    description:
+      "<p>個人で作ったドット絵エディタです．<br>ブラウザで完結し、サーバーにアップロードとかはしないです. サーバーが耐える限りは無料で広告無しで公開します.</p>",
+    imagePath: "/pub/portfolio/dots/1.webp",
+    date: "2026-07-16",
+  },
 ]);
