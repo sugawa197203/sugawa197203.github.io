@@ -110,7 +110,13 @@ ul.red > li:before {
   padding-left: 20px;
 }
 
+.sakuhin .card {
+  width: 300px;
+  max-width: 100%;
+}
+
 .card-aspect {
+  width: 100%;
   aspect-ratio: 16/9;
   object-fit: cover;
 }
