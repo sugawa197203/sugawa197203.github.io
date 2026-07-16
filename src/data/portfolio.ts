@@ -281,6 +281,28 @@ export const eventTimeLines: EventTimeLineItem[] = sortByDateDesc([
     description:
       "<p>SECCON Beginners CTF 2025に参加しました．1872ptで880チーム中203位でした.</p>",
   },
+  {
+    id: "noukousai2025",
+    title: "農工祭2025 ゲーム展示",
+    date: "2025-11-24",
+    description:
+      "<p>農工大の農学部の学祭の農工祭でSPELL RUSHを展示しました．</p>",
+    xPath: "https://x.com/TUATMCC/status/1988926901885542742",
+  },
+  {
+    id: "gassyuku2025spring",
+    title: "MCCハッカソン春合宿2025参加",
+    date: "2026-03-20",
+    description:
+      "<p>MCCハッカソン合宿春2025合宿に参加しました．Flutterで農工大生限定の掲示板を作りました．(公開はしてません)</p>",
+    xPath: "https://x.com/TUATMCC/status/2042073902562865316",
+  },
+  {
+    id: "icpc2026",
+    title: "ICPC2026国内予選参加",
+    date: "2026-07-03",
+    description: "<p>ICPC2026にコーチとして参加しました．</p>",
+  },
 ]);
 
 export const portfolioItems: PortfolioItem[] = sortByDateDesc([
