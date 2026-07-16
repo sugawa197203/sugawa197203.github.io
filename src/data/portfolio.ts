@@ -365,4 +365,12 @@ export const portfolioItems: PortfolioItem[] = sortByDateDesc([
     imagePath: "/pub/portfolio/dots/1.webp",
     date: "2026-07-16",
   },
+  {
+    id: "wavconverter",
+    title: "WAV Converter",
+    description:
+      "<p>個人で作った音声ファイルを変換するアプリケーションです．<br>ブラウザで完結し、サーバーにアップロードとかはしないです. サーバーが耐える限りは無料で広告無しで公開します.</p>",
+    imagePath: "/pub/portfolio/wavconverter/1.webp",
+    date: "2026-07-16",
+  },
 ]);
